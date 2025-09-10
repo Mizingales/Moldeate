@@ -1,0 +1,239 @@
+// Configuración de items con sus descripciones
+const items = {
+    'espada.png': {
+        name: 'Espada',
+        description: 'Una espada afilada y poderosa.\nIdeal para aventureros valientes.\nAumenta tu fuerza de ataque.'
+    },
+    'gafas.png': {
+        name: 'Gafas',
+        description: 'Gafas mágicas de sabiduría.\nMejoran tu visión y percepción.\nRevelan secretos ocultos.'
+    },
+    'orbe.png': {
+        name: 'Orbe Mágico',
+        description: 'Un orbe lleno de energía mística.\nPuede lanzar hechizos poderosos.\nBrilla con luz propia.'
+    },
+    'sombrero.png': {
+        name: 'Sombrero',
+        description: 'Sombrero de mago experimentado.\nOtorga conocimiento arcano.\nProtege de maldiciones.'
+    }
+};
+
+// Array de masas disponibles
+const masas = ['masa-001.jpg', 'masa-002.jpg', 'masa-003.jpg', 'masa-004.jpg', 'masa-005.jpg', 'masa-006.jpg', 'masa-007.jpg', 'masa-008.jpg', 'masa-009.jpg', 'masa-010.jpg', 
+'masa-011.jpg', 'masa-012.jpg', 'masa-013.jpg', 'masa-014.jpg', 'masa-015.jpg', 'masa-016.jpg', 'masa-017.jpg', 'masa-018.jpg', 'masa-019.jpg', 'masa-020.jpg', 
+'masa-021.jpg', 'masa-022.jpg', 'masa-023.jpg', 'masa-024.jpg', 'masa-025.jpg', 'masa-026.jpg', 'masa-027.jpg', 'masa-028.jpg', 'masa-029.jpg', 'masa-030.jpg', 
+'masa-031.jpg', 'masa-032.jpg', 'masa-033.jpg', 'masa-034.jpg', 'masa-035.jpg', 'masa-036.jpg', 'masa-037.jpg', 'masa-038.jpg', 'masa-039.jpg', 'masa-040.jpg', 
+'masa-041.jpg', 'masa-042.jpg', 'masa-043.jpg', 'masa-044.jpg', 'masa-045.jpg', 'masa-046.jpg', 'masa-047.jpg', 'masa-048.jpg', 'masa-049.jpg', 'masa-050.jpg', 
+'masa-051.jpg', 'masa-052.jpg', 'masa-053.jpg', 'masa-054.jpg', 'masa-055.jpg', 'masa-056.jpg', 'masa-057.jpg', 'masa-058.jpg', 'masa-059.jpg', 'masa-060.jpg', 
+'masa-061.jpg', 'masa-062.jpg', 'masa-063.jpg', 'masa-064.jpg', 'masa-065.jpg', 'masa-066.jpg', 'masa-067.jpg', 'masa-068.jpg', 'masa-069.jpg', 'masa-070.jpg', 
+'masa-071.jpg', 'masa-072.jpg', 'masa-073.jpg', 'masa-074.jpg', 'masa-075.jpg', 'masa-076.jpg', 'masa-077.jpg', 'masa-078.jpg', 'masa-079.jpg', 'masa-080.jpg', 
+'masa-081.jpg', 'masa-082.jpg', 'masa-083.jpg', 'masa-084.jpg', 'masa-085.jpg', 'masa-086.jpg', 'masa-087.jpg', 'masa-088.jpg', 'masa-089.jpg', 'masa-090.jpg', 
+'masa-091.jpg', 'masa-092.jpg', 'masa-093.jpg', 'masa-094.jpg', 'masa-095.jpg', 'masa-096.jpg', 'masa-097.jpg', 'masa-098.jpg', 'masa-099.jpg', 'masa-100.jpg', 
+'masa-101.jpg', 'masa-102.jpg', 'masa-103.jpg', 'masa-104.jpg', 'masa-105.jpg', 'masa-106.jpg', 'masa-107.jpg', 'masa-108.jpg', 'masa-109.jpg', 'masa-110.jpg', 
+'masa-111.jpg', 'masa-112.jpg', 'masa-113.jpg', 'masa-114.jpg', 'masa-115.jpg', 'masa-116.jpg', 'masa-117.jpg', 'masa-118.jpg', 'masa-119.jpg', 'masa-120.jpg', 
+'masa-121.jpg', 'masa-122.jpg', 'masa-123.jpg', 'masa-124.jpg', 'masa-125.jpg', 'masa-126.jpg', 'masa-127.jpg', 'masa-128.jpg', 'masa-129.jpg', 'masa-130.jpg', 
+'masa-131.jpg', 'masa-132.jpg', 'masa-133.jpg', 'masa-134.jpg', 'masa-135.jpg', 'masa-136.jpg', 'masa-137.jpg', 'masa-138.jpg', 'masa-139.jpg', 'masa-140.jpg', 
+'masa-141.jpg', 'masa-142.jpg', 'masa-143.jpg', 'masa-144.jpg', 'masa-145.jpg', 'masa-146.jpg', 'masa-147.jpg', 'masa-148.jpg', 'masa-149.jpg', 'masa-150.jpg', 
+'masa-151.jpg', 'masa-152.jpg', 'masa-153.jpg', 'masa-154.jpg', 'masa-155.jpg', 'masa-156.jpg', 'masa-157.jpg', 'masa-158.jpg', 'masa-159.jpg', 'masa-160.jpg', 
+'masa-161.jpg', 'masa-162.jpg', 'masa-163.jpg', 'masa-164.jpg', 'masa-165.jpg', 'masa-166.jpg', 'masa-167.jpg', 'masa-168.jpg'];
+
+// Variables globales
+let selectedItems = [];
+let finalMasa = null;
+let generatedStory = '';
+
+// Obtener datos de la URL o localStorage
+function getSelectionData() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const itemsParam = urlParams.get('items');
+    
+    if (itemsParam) {
+        selectedItems = itemsParam.split(',');
+    } else {
+        // Si no hay parámetros, intentar obtener de localStorage
+        const savedItems = localStorage.getItem('selectedItems');
+        
+        if (savedItems) {
+            selectedItems = JSON.parse(savedItems);
+        } else {
+            // Si no hay datos, redirigir a selección
+            window.location.href = 'seleccion.php';
+            return;
+        }
+    }
+    
+    // Seleccionar una masa aleatoria nueva
+    const randomIndex = Math.floor(Math.random() * masas.length);
+    finalMasa = masas[randomIndex];
+}
+
+// Generar historia usando ChatGPT API
+async function generateStory() {
+    // Llama al backend PHP para obtener la historia generada
+    try {
+        const response = await fetch('generate_story.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: `items=${encodeURIComponent(selectedItems.join(','))}&masa=${encodeURIComponent(finalMasa)}`
+        });
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        generatedStory = data.story;
+        if (data.fallback) {
+            console.warn('Se usó la historia de fallback.');
+        }
+    } catch (error) {
+        console.error('Error generando historia:', error);
+        // Fallback local - usar una historia simple
+        generatedStory = "Cada mañana, te despiertas junto al mar. En esta pequeña isla donde el viento huele a sal y a pan recién horneado, vives aventuras únicas con tus objetos mágicos. Cada día trae nuevos descubrimientos y la promesa de algo extraordinario.";
+    }
+}
+
+// Mostrar la masa final
+function displayMasa() {
+    const masaDisplay = document.getElementById('masaFinal');
+    if (!masaDisplay || !finalMasa) return;
+    
+    // Limpiar cualquier imagen previa
+    masaDisplay.style.backgroundImage = '';
+    // Establecer la nueva imagen
+    masaDisplay.style.backgroundImage = `url('masas/${finalMasa}')`;
+}
+
+// Mostrar inventario final
+function displayInventory() {
+    const inventarioGrid = document.getElementById('inventarioFinal');
+    
+    // Limpiar slots
+    inventarioGrid.innerHTML = '';
+    
+    // Crear 8 slots
+    for (let i = 0; i < 8; i++) {
+        const slot = document.createElement('div');
+        slot.className = 'item-slot';
+        
+        if (i < selectedItems.length) {
+            const img = document.createElement('img');
+            img.src = `items/${selectedItems[i]}`;
+            img.alt = selectedItems[i].replace('.png', '');
+            slot.appendChild(img);
+        }
+        
+        inventarioGrid.appendChild(slot);
+    }
+
+    // Mostrar información de los items
+    displayItemsInfo();
+}
+
+// Mostrar información detallada de los items
+function displayItemsInfo() {
+    const itemsInfoContainer = document.getElementById('itemsInfo') || createItemsInfoContainer();
+    
+    if (selectedItems.length === 0) {
+        itemsInfoContainer.innerHTML += '<p>No hay items seleccionados.</p>';
+        return;
+    }
+
+    const itemsList = document.createElement('ul');
+    itemsList.className = 'items-info-list';
+    
+    selectedItems.forEach(itemFile => {
+        if (items[itemFile]) {
+            const itemInfo = items[itemFile];
+            const listItem = document.createElement('li');
+            listItem.className = 'item-info';
+            listItem.innerHTML = `
+                <h4>${itemInfo.name}</h4>
+                <p>${itemInfo.description.replace(/\n/g, '<br>')}</p>
+            `;
+            itemsList.appendChild(listItem);
+        }
+    });
+    
+    itemsInfoContainer.appendChild(itemsList);
+}
+
+// Crear el contenedor para la información de los items si no existe
+function createItemsInfoContainer() {
+    const container = document.createElement('div');
+    container.id = 'itemsInfo';
+    container.className = 'items-info-container';
+    
+    // Insertar después del inventario
+    const inventarioFinal = document.getElementById('inventarioFinal');
+    inventarioFinal.parentNode.insertBefore(container, inventarioFinal.nextSibling);
+    
+    return container;
+}
+
+// Mostrar historia generada
+function displayStory() {
+    const storyContainer = document.getElementById('storyContainer');
+    storyContainer.textContent = generatedStory;
+}
+
+// Ocultar pantalla de carga y mostrar resultado
+function showFinalScreen() {
+    document.getElementById('loadingScreen').style.display = 'none';
+    document.getElementById('finalScreen').style.display = 'block';
+}
+
+// Generar PDF
+function descargarPDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    
+    // Configurar fuente
+    doc.setFont("helvetica");
+    
+    // Título
+    doc.setFontSize(20);
+    doc.text('Tu Historia de Plastilina', 20, 30);
+    
+    // Items seleccionados
+    doc.setFontSize(14);
+    doc.text('Items Elegidos:', 20, 50);
+    const itemNames = selectedItems.map(item => 
+        item.replace('.png', '').replace(/[_-]/g, ' ')
+    );
+    doc.setFontSize(12);
+    doc.text(itemNames.join(', '), 20, 60);
+    
+    // Historia
+    doc.setFontSize(14);
+    doc.text('Tu Historia:', 20, 80);
+    doc.setFontSize(10);
+    
+    // Dividir texto en líneas para que quepa en el PDF
+    const splitText = doc.splitTextToSize(generatedStory, 170);
+    doc.text(splitText, 20, 90);
+    
+    // Descargar
+    doc.save('mi-historia-moldeate.pdf');
+}
+
+// Inicializar cuando carga la página
+document.addEventListener('DOMContentLoaded', async function() {
+    // Obtener datos de selección
+    getSelectionData();
+    
+    // Mostrar elementos iniciales
+    displayMasa();
+    displayInventory();
+    
+    // Generar historia (esto puede tomar tiempo)
+    await generateStory();
+    
+    // Mostrar historia
+    displayStory();
+    
+    // Simular tiempo de carga mínimo para mejor UX
+    setTimeout(() => {
+        showFinalScreen();
+    }, 2000);
+});
