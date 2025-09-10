@@ -1,21 +1,190 @@
 // Configuración de items con sus descripciones
 const items = {
-    'espada.png': {
-        name: 'Espada',
-        description: 'Una espada afilada y poderosa.\nIdeal para aventureros valientes.\nAumenta tu fuerza de ataque.'
-    },
-    'gafas.png': {
-        name: 'Gafas',
-        description: 'Gafas mágicas de sabiduría.\nMejoran tu visión y percepción.\nRevelan secretos ocultos.'
-    },
-    'orbe.png': {
-        name: 'Orbe Mágico',
-        description: 'Un orbe lleno de energía mística.\nPuede lanzar hechizos poderosos.\nBrilla con luz propia.'
-    },
-    'sombrero.png': {
-        name: 'Sombrero',
-        description: 'Sombrero de mago experimentado.\nOtorga conocimiento arcano.\nProtege de maldiciones.'
-    }
+    'espada reluciente.png': { 
+    name: 'Espada Reluciente', 
+    description: 'Afilada y poderosa. Ideal para aventureros valientes.',
+    atributo: 'Valiente'
+},
+'espada antigua.png': { 
+    name: 'Espada Antigua', 
+    description: 'Cargada de victorias y derrotas, porque aprender de los errores es la única salida.',
+    atributo: 'Relfexivo'
+},
+'gafas mágicas.png': { 
+    name: 'Gafas mágicas', 
+    description: 'Revelan secretos ocultos. Podrás saberlo todo, solo de un vistazo.',
+    atributo: 'Curioso'
+},
+'orbe vibrante.png': { 
+    name: 'Orbe vibrante', 
+    description: 'Un orbe lleno de energía e ideas locas. Si lo llevas encima, nunca más estarás aburrido.',
+    atributo: 'Energético'
+},
+'sombrero de mago.png': { 
+    name: 'Sombrero de mago', 
+    description: 'Este sombrero carga con el conocimiento absoluto. Y si, huele a humedad.',
+    atributo: 'Sabio'
+},
+'escudo oxidado.png': { 
+    name: 'Escudo oxidado', 
+    description: 'Ha pasado mil batallas, pero aún aguanta mil más.',
+    atributo: 'Resistente'
+},
+'linterna perpetua.png': { 
+    name: 'Linterna perpetua', 
+    description: 'Una luz tenue y cálida que nunca, JAMÁS, se apaga.',
+    atributo: 'Esperanzado'
+},
+'pluma dorada.png': { 
+    name: 'Pluma dorada', 
+    description: 'Todo aquello que dibujes en el aire se materializará. (Por favor no dibujes a Godzilla)',
+    atributo: 'Creativo'
+},
+'botella de arena.png': { 
+    name: 'Botella de arena', 
+    description: 'Cada grano de arena contiene un recuerdo favorito. Puedes revivirlos en la palma de tu mano.',
+    atributo: 'Nostálgico'
+},
+'mapa incompleto.png': { 
+    name: 'Mapa incompleto', 
+    description: 'Un mapa con caminos que aún no existen. Solo revela su ruta al ser usado.',
+    atributo: 'Explorador'
+},
+'flor marchita.png': { 
+    name: 'Flor marchita', 
+    description: 'Sus pétalos están secos, pero su delicioso aroma sigue intacto.',
+    atributo: 'Sensible'
+},
+'campana de cristal.png': { 
+    name: 'Campana de cristal', 
+    description: 'Al sonar, ahuyenta sombras, males y dudas.',
+    atributo: 'Puro'
+},
+'capa cómoda.png': { 
+    name: 'Capa cómoda', 
+    description: 'Una capa que protege del viento y del juicio de los demás.',
+    atributo: 'Discreto'
+},
+'amuleto de hueso.png': { 
+    name: 'Amuleto de hueso', 
+    description: 'Amuleto tallado en antiguo hueso. Te recuerda que todo poder nace de lo finito.',
+    atributo: 'Consciente'
+},
+'cuerda trenzada.png': { 
+    name: 'Cuerda trenzada', 
+    description: 'Robusta y flexible. Puede sostenerte o liberarte, según cómo se use.',
+    atributo: 'Adaptable'
+},
+'daga curva.png': { 
+    name: 'Daga curva', 
+    description: 'Rápida y silenciosa, útil en las sombras.',
+    atributo: 'Astuto'
+},
+'algo extraño.png': { 
+    name: 'Algo extraño', 
+    description: 'Se dice que este objeto, en las manos indicadas revelará el mayor misterio.',
+    atributo: 'Misterioso'
+},
+'brújula errática.png': { 
+    name: 'Brújula errática', 
+    description: 'Apunta hacia lo que deseas, no hacia el norte.',
+    atributo: 'Deseoso'
+},
+'anillo oxidado.png': { 
+    name: 'Anillo oxidado', 
+    description: 'Viejo anillo que alguna vez brilló. Aun así, conserva la fuerza de un gran juramento.',
+    atributo: 'Leal'
+},
+'corona impecable.png': { 
+    name: 'Corona impecable', 
+    description: 'Una corona brillante que encaja perfectamente en tu cabeza. En serio, brilla demasiado.',
+    atributo: 'Orgulloso'
+},
+'cucharón de madera.png': { 
+    name: 'Cucharón de madera', 
+    description: 'Simple y humilde, quien sabe cuantos usos le podrás dar.',
+    atributo: 'Generoso'
+},
+'rosa de metal.png': { 
+    name: 'Rosa de metal', 
+    description: 'Una flor hecha de hierro, imposible de marchitar.',
+    atributo: 'Fuerte'
+},
+'piedra pulida.png': { 
+    name: 'Piedra pulida', 
+    description: 'Suavizada por el tiempo y el agua. Cabe en la palma de la mano.',
+    atributo: 'Paciente'
+},
+'libro ilegible.png': { 
+    name: 'Libro ilegible', 
+    description: 'Sus páginas están llenas de símbolos que nadie entiende.',
+    atributo: 'Enigmático'
+},
+'rama seca.png': { 
+    name: 'Rama seca', 
+    description: 'Aunque quebradiza, conserva la memoria del árbol que supo ser.',
+    atributo: 'Melancólico'
+},
+'gema agrietada.png': { 
+    name: 'Gema agrietada', 
+    description: 'Brilla con fuerza a pesar de sus fisuras internas.',
+    atributo: 'Valioso'
+},
+'campanilla ruidosa.png': { 
+    name: 'Campanilla ruidosa', 
+    description: 'Su sonido áspero aún logra llamar la atención a kilómetros de distancia.',
+    atributo: 'Tenaz'
+},
+'pergamino quemado.png': { 
+    name: 'Pergamino quemado', 
+    description: 'Lo poco que queda escrito parece hablar de tiempos gloriosos.',
+    atributo: 'Nostálgico'
+},
+'flauta torcida.png': { 
+    name: 'Flauta torcida', 
+    description: 'Sus notas suenan únicas, extrañas, a veces incómodas, pero llenas de carácter.',
+    atributo: 'Original'
+},
+'girasol eterno.png': { 
+    name: 'Girasol eterno', 
+    description: 'Siempre se orienta hacia la luz, incluso en la más oscura de las tormentas.',
+    atributo: 'Optimista'
+},
+'balanza antigua.png': { 
+    name: 'Balanza antigua', 
+    description: 'Sus platillos tiemblan, pero siempre encuentran el equilibrio justo.',
+    atributo: 'Justo'
+},
+'corazón de cristal.png': { 
+    name: 'Corazón de cristal', 
+    description: 'Frágil y transparente, pero capaz de reflejar el dolor y la alegría de los demás.',
+    atributo: 'Empático'
+},
+'caja de engranajes.png': { 
+    name: 'Caja de engranajes', 
+    description: 'Cada pieza encaja con precisión. Al mover una, todo el sistema responde.',
+    atributo: 'Detallista'
+},
+'alas desmontables.png': { 
+    name: 'Alas desmontables', 
+    description: 'No necesitan permiso para volar. Vienen con un práctico arnés.',
+    atributo: 'Independiente'
+},
+'incienso.png': { 
+    name: 'Incienso', 
+    description: 'Su aroma suave permanece en el aire, incluso sin haberlo encendido.',
+    atributo: 'Tranquilo'
+},
+'frasco de estrellas.png': { 
+    name: 'Frasco de estrellas', 
+    description: 'Contiene un puñado de luces diminutas que titilan como promesas. Serán haditas?',
+    atributo: 'Soñador'
+},
+'pelota multicolor.png': { 
+    name: 'Pelota multicolor', 
+    description: 'Va a toda velocidad. Es imposible predecir su próximo rebote.',
+    atributo: 'Juguetón'
+},
 };
 
 // Array de masas disponibles
