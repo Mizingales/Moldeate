@@ -352,38 +352,104 @@ function showFinalScreen() {
     document.getElementById('finalScreen').style.display = 'block';
 }
 
-// Generar PDF
-function descargarPDF() {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-    
-    // Configurar fuente
-    doc.setFont("helvetica");
-    
-    // Título
-    doc.setFontSize(20);
-    doc.text('Tu Historia de Plastilina', 20, 30);
-    
-    // Items seleccionados
-    doc.setFontSize(14);
-    doc.text('Items Elegidos:', 20, 50);
-    const itemNames = selectedItems.map(item => 
-        item.replace('.png', '').replace(/[_-]/g, ' ')
-    );
-    doc.setFontSize(12);
-    doc.text(itemNames.join(', '), 20, 60);
-    
-    // Historia
-    doc.setFontSize(14);
-    doc.text('Tu Historia:', 20, 80);
-    doc.setFontSize(10);
-    
-    // Dividir texto en líneas para que quepa en el PDF
-    const splitText = doc.splitTextToSize(generatedStory, 170);
-    doc.text(splitText, 20, 90);
-    
-    // Descargar
-    doc.save('mi-historia-moldeate.pdf');
+// Generar PDF con screenshot
+async function descargarPDF() {
+    try {
+        // Mostrar indicador de carga
+        const downloadButton = document.querySelector('button[onclick="descargarPDF()"]');
+        const originalText = downloadButton.textContent;
+        downloadButton.textContent = 'Generando PDF...';
+        downloadButton.disabled = true;
+        
+        // Ocultar los botones temporalmente
+        const buttonsContainer = document.querySelector('.buttons-container');
+        const originalDisplay = buttonsContainer.style.display;
+        buttonsContainer.style.display = 'none';
+        
+        // Pequeña pausa para que se aplique el ocultamiento
+        await new Promise(resolve => setTimeout(resolve, 100));
+        
+        // Obtener el elemento que queremos capturar (toda la pantalla final excepto botones)
+        const finalScreen = document.getElementById('finalScreen');
+        
+        // Configurar opciones para html2canvas
+        const canvas = await html2canvas(finalScreen, {
+            allowTaint: true,
+            useCORS: true,
+            scale: 1.5, // Reducir escala para que quepa mejor en una página
+            backgroundColor: '#2c2c2c', // Color de fondo
+            width: finalScreen.scrollWidth,
+            height: finalScreen.scrollHeight
+        });
+        
+        // Restaurar los botones
+        buttonsContainer.style.display = originalDisplay;
+        
+        // Crear PDF
+        const { jsPDF } = window.jspdf;
+        const imgData = canvas.toDataURL('image/png');
+        
+        // Crear PDF en formato A4
+        const doc = new jsPDF('p', 'mm', 'a4');
+        
+        // Establecer el fondo del PDF del mismo color que la web (#2c2c2c)
+        doc.setFillColor(44, 44, 44); // RGB equivalente a #2c2c2c
+        doc.rect(0, 0, 210, 297, 'F'); // Llenar toda la página A4 con el color de fondo
+        
+        // Dimensiones de la página A4 en mm
+        const pageWidth = 210;
+        const pageHeight = 297;
+        
+        // Calcular las dimensiones para ajustar todo el contenido en una página
+        const imgWidth = canvas.width;
+        const imgHeight = canvas.height;
+        
+        // Calcular el ratio para ajustar a la página con márgenes
+        const margin = 10; // margen en mm
+        const availableWidth = pageWidth - (margin * 2);
+        const availableHeight = pageHeight - (margin * 2);
+        
+        let finalWidth, finalHeight;
+        
+        // Calcular las dimensiones finales manteniendo la proporción
+        const widthRatio = availableWidth / (imgWidth * 0.264583); // conversión px to mm
+        const heightRatio = availableHeight / (imgHeight * 0.264583);
+        const ratio = Math.min(widthRatio, heightRatio);
+        
+        finalWidth = (imgWidth * 0.264583) * ratio;
+        finalHeight = (imgHeight * 0.264583) * ratio;
+        
+        // Centrar la imagen en la página
+        const xOffset = (pageWidth - finalWidth) / 2;
+        const yOffset = (pageHeight - finalHeight) / 2;
+        
+        // Agregar la imagen al PDF ajustada a una sola página
+        doc.addImage(imgData, 'PNG', xOffset, yOffset, finalWidth, finalHeight);
+        
+        // Generar ID único (timestamp + número aleatorio)
+        const timestamp = Date.now();
+        const randomNum = Math.floor(Math.random() * 1000);
+        const uniqueId = `${timestamp}${randomNum}`;
+        
+        // Nombre del archivo
+        const filename = `moldeate_resultado_${uniqueId}.pdf`;
+        
+        // Descargar el PDF
+        doc.save(filename);
+        
+        // Restaurar el botón
+        downloadButton.textContent = originalText;
+        downloadButton.disabled = false;
+        
+    } catch (error) {
+        console.error('Error al generar PDF:', error);
+        alert('Hubo un error al generar el PDF. Por favor, inténtalo de nuevo.');
+        
+        // Restaurar el botón en caso de error
+        const downloadButton = document.querySelector('button[onclick="descargarPDF()"]');
+        downloadButton.textContent = 'Descargar.me';
+        downloadButton.disabled = false;
+    }
 }
 
 // Inicializar cuando carga la página
