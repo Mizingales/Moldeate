@@ -30,7 +30,7 @@ if (!is_array($items)) {
     $items = explode(',', $items);
 }
 
-$itemNames = MoldeatConstants::processItemNames($items);
+$itemAttributes = MoldeatConstants::getItemAttributes($items);
 
 
 
@@ -38,8 +38,11 @@ $itemNames = MoldeatConstants::processItemNames($items);
 
 
 
-//Promp que se envía a Groq (Llama3)
-$prompt = "Crea un relato corto y creativo en español sobre un personaje ficticio. Debe costar de entre 150 y 300 palabras, conservando la coherencia. Ten en cuenta, que los atributos de dicho personaje son determinados por la descripción de los siguientes ítems" . implode(', ', $itemNames) . ". El relato debe estar redactado en tiempo presente, en segunda persona singular. La persona que va a leer esto es en realidad, ese personaje. El relato trata de describir a este personaje y su entorno, en su cotideanidad, como si de pronto pudieramos ver que está haciendo en este momento";
+//Prompt que se envía a Groq (Llama3)
+$prompt = "Genera un breve relato en segunda persona sobre un personaje ficticio. Debe contar acerca de lo que ese personaje está haciendo ahora mismo y que planea hacer el resto del día. Ten en cuenta que el lector de este relato se debe sentir como si se tratara de él mismo.
+La personalidad del personaje debe estar definida por los siguientes adjetivos: " . implode(', ', $itemAttributes) . ". 
+El relato debe ser poético y evocador, no más de 8 oraciones. 
+No hace falta mencionar explícitamente los adjetivos, transmítelos a través de las acciones, emociones y pensamientos del personaje.";
 
 
 
@@ -58,7 +61,7 @@ $data = [
             'content' => $prompt
         ]
     ],
-    'max_tokens' => 200,
+    'max_tokens' => 500,
     'temperature' => 0.8
 ];
 
@@ -85,7 +88,7 @@ if ($debug) {
 
 if ($result === FALSE) {
     // Fallback
-    $story = MoldeatConstants::getFallbackStory($itemNames);
+    $story = MoldeatConstants::getFallbackStory($itemAttributes);
     echo json_encode(['story' => $story, 'fallback' => true]);
     exit;
 }

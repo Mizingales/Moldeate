@@ -223,11 +223,11 @@ let currentMasa = null;
 // Inicializar la biblioteca
 function initializeBiblioteca() {
     const biblioteca = document.getElementById('biblioteca');
+    console.log('Inicializando biblioteca:', biblioteca); // Debug
     
     Object.keys(items).forEach((itemFile, index) => {
         const slot = document.createElement('div');
         slot.className = 'item-slot';
-        slot.draggable = true;
         slot.dataset.item = itemFile;
         
         const img = document.createElement('img');
@@ -237,81 +237,81 @@ function initializeBiblioteca() {
         slot.appendChild(img);
         biblioteca.appendChild(slot);
         
-        // Event listeners para drag and drop
-        slot.addEventListener('dragstart', handleDragStart);
+        // Event listeners para clic y tooltips
+        slot.addEventListener('click', handleBibliotecaClick, true); // Usar capture phase
+        console.log('Event listener agregado a:', itemFile); // Debug
         slot.addEventListener('mouseover', showTooltip);
         slot.addEventListener('mousemove', moveTooltip);
         slot.addEventListener('mouseout', hideTooltip);
     });
 }
 
-// Drag and Drop handlers
-function handleDragStart(e) {
-    const slot = e.target.closest('.item-slot');
-    const itemFile = slot.dataset.item;
+// Manejar clic en items de la biblioteca
+function handleBibliotecaClick(e) {
+    e.preventDefault();
+    e.stopPropagation();
     
-    // No permitir arrastrar si el item ya está en el inventario
-    if (inventoryItems.includes(itemFile)) {
-        e.preventDefault();
-        return false;
+    console.log('Clic en biblioteca detectado'); // Debug
+    const slot = e.target.closest('.item-slot');
+    console.log('Slot encontrado:', slot); // Debug
+    
+    if (!slot) {
+        console.log('No se encontró slot'); // Debug
+        return;
     }
     
-    e.dataTransfer.setData('text/plain', itemFile);
-    e.dataTransfer.effectAllowed = 'move';
-    slot.classList.add('dragging');
+    // Verificar si el slot está deshabilitado
+    if (slot.classList.contains('disabled')) {
+        console.log('Slot está deshabilitado'); // Debug
+        return;
+    }
+    
+    const itemFile = slot.dataset.item;
+    console.log('Item file:', itemFile); // Debug
+    
+    if (!itemFile) {
+        console.log('No se encontró itemFile'); // Debug
+        return;
+    }
+    
+    // No permitir seleccionar si el item ya está en el inventario
+    if (inventoryItems.includes(itemFile)) {
+        console.log('Item ya está en inventario'); // Debug
+        return;
+    }
+    
+    // Buscar el primer slot vacío en el inventario
+    const emptySlot = findEmptyInventorySlot();
+    console.log('Slot vacío encontrado:', emptySlot); // Debug
+    if (emptySlot) {
+        addItemToInventory(itemFile, emptySlot);
+        console.log('Item agregado al inventario'); // Debug
+    } else {
+        alert('El inventario está lleno. Quita un item antes de agregar otro.');
+    }
 }
 
-// Setup drag and drop para el inventario
+// Buscar el primer slot vacío en el inventario
+function findEmptyInventorySlot() {
+    const inventorySlots = document.querySelectorAll('#inventario .item-slot');
+    for (let slot of inventorySlots) {
+        if (!slot.querySelector('img')) {
+            return slot;
+        }
+    }
+    return null;
+}
+
+// Setup para el inventario (solo clic para remover)
 function setupInventario() {
     const inventorySlots = document.querySelectorAll('#inventario .item-slot');
     
     inventorySlots.forEach(slot => {
-        slot.addEventListener('dragover', handleDragOver);
-        slot.addEventListener('drop', handleDrop);
-        slot.addEventListener('dragleave', handleDragLeave);
-        slot.addEventListener('dragenter', handleDragEnter);
-        slot.addEventListener('click', handleSlotClick);
+        slot.addEventListener('click', handleInventorySlotClick);
     });
 }
 
-function handleDragEnter(e) {
-    e.preventDefault();
-    e.dataTransfer.dropEffect = 'move';
-}
-
-function handleDragOver(e) {
-    e.preventDefault();
-    e.dataTransfer.dropEffect = 'move';
-    e.target.classList.add('drag-over');
-}
-
-function handleDragLeave(e) {
-    // Solo remover la clase si realmente salimos del elemento
-    if (!e.currentTarget.contains(e.relatedTarget)) {
-        e.target.classList.remove('drag-over');
-    }
-}
-
-function handleDrop(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    e.target.classList.remove('drag-over');
-    
-    const itemFile = e.dataTransfer.getData('text/plain');
-    const slot = e.target.closest('.item-slot');
-    
-    // Solo permitir drop en slots vacíos
-    if (slot && !slot.querySelector('img')) {
-        addItemToInventory(itemFile, slot);
-    }
-    
-    // Remover clase dragging
-    document.querySelectorAll('.dragging').forEach(el => {
-        el.classList.remove('dragging');
-    });
-}
-
-function handleSlotClick(e) {
+function handleInventorySlotClick(e) {
     const slot = e.target.closest('.item-slot');
     const img = slot.querySelector('img');
     
@@ -369,10 +369,8 @@ function updateBibliotecaState() {
         const itemFile = slot.dataset.item;
         if (inventoryItems.includes(itemFile)) {
             slot.classList.add('disabled');
-            slot.draggable = false;
         } else {
             slot.classList.remove('disabled');
-            slot.draggable = true;
         }
     });
 }
@@ -406,7 +404,11 @@ function showTooltip(e) {
     }
     
     if (itemFile && items[itemFile]) {
-        tooltip.innerHTML = items[itemFile].description.replace(/\n/g, '<br>');
+        const itemName = items[itemFile].name;
+        const itemDescription = items[itemFile].description;
+        
+        // Crear el contenido del tooltip con nombre y descripción
+        tooltip.innerHTML = `<strong>${itemName}</strong><br><br>${itemDescription.replace(/\n/g, '<br>')}`;
         tooltip.style.display = 'block';
         moveTooltip(e);
     }
@@ -472,13 +474,4 @@ function finalizarSeleccion() {
 document.addEventListener('DOMContentLoaded', function() {
     initializeBiblioteca();
     setupInventario();
-    
-    // Prevenir el comportamiento por defecto del drag & drop en toda la página
-    document.addEventListener('dragover', function(e) {
-        e.preventDefault();
-    });
-    
-    document.addEventListener('drop', function(e) {
-        e.preventDefault();
-    });
 });
