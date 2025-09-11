@@ -85,7 +85,7 @@ const items = {
     description: 'Se dice que este objeto, en las manos indicadas revelará el mayor misterio.',
     atributo: 'Misterioso'
 },
-'brújula errática.png': { 
+'brujula erratica.png': { 
     name: 'Brújula errática', 
     description: 'Apunta hacia lo que deseas, no hacia el norte.',
     atributo: 'Deseoso'

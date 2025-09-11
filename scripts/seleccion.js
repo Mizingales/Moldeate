@@ -1,6 +1,6 @@
 // Configuración de items con sus tooltips
 const items = {
-    'espada reluciente.png': { 
+'espada reluciente.png': { 
     name: 'Espada Reluciente', 
     description: 'Afilada y poderosa. Ideal para aventureros valientes.',
     atributo: 'Valiente'
@@ -85,7 +85,7 @@ const items = {
     description: 'Se dice que este objeto, en las manos indicadas revelará el mayor misterio.',
     atributo: 'Misterioso'
 },
-'brújula errática.png': { 
+'brujula erratica.png': { 
     name: 'Brújula errática', 
     description: 'Apunta hacia lo que deseas, no hacia el norte.',
     atributo: 'Deseoso'
@@ -100,7 +100,7 @@ const items = {
     description: 'Una corona brillante que encaja perfectamente en tu cabeza. En serio, brilla demasiado.',
     atributo: 'Orgulloso'
 },
-'cucharón de madera.png': { 
+'cucharon de madera.png': { 
     name: 'Cucharón de madera', 
     description: 'Simple y humilde, quien sabe cuantos usos le podrás dar.',
     atributo: 'Generoso'
@@ -155,7 +155,7 @@ const items = {
     description: 'Sus platillos tiemblan, pero siempre encuentran el equilibrio justo.',
     atributo: 'Justo'
 },
-'corazón de cristal.png': { 
+'corazon de cristal.png': { 
     name: 'Corazón de cristal', 
     description: 'Frágil y transparente, pero capaz de reflejar el dolor y la alegría de los demás.',
     atributo: 'Empático'
