@@ -60,7 +60,7 @@ const items = {
     description: 'Al sonar, ahuyenta sombras, males y dudas.',
     atributo: 'Puro'
 },
-'capa cómoda.png': { 
+'capa comoda.png': { 
     name: 'Capa cómoda', 
     description: 'Una capa que protege del viento y del juicio de los demás.',
     atributo: 'Discreto'

@@ -10,7 +10,7 @@ const items = {
     description: 'Cargada de victorias y derrotas, porque aprender de los errores es la única salida.',
     atributo: 'Relfexivo'
 },
-'gafas mágicas.png': { 
+'gafas magicas.png': { 
     name: 'Gafas mágicas', 
     description: 'Revelan secretos ocultos. Podrás saberlo todo, solo de un vistazo.',
     atributo: 'Curioso'
@@ -60,7 +60,7 @@ const items = {
     description: 'Al sonar, ahuyenta sombras, males y dudas.',
     atributo: 'Puro'
 },
-'capa cómoda.png': { 
+'capa comoda.png': { 
     name: 'Capa cómoda', 
     description: 'Una capa que protege del viento y del juicio de los demás.',
     atributo: 'Discreto'
