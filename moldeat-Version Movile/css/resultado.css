@@ -1,0 +1,345 @@
+﻿* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #2c2c2c;
+    font-family: 'Press Start 2P', monospace;
+    color: white;
+    overflow: hidden;
+}
+
+/* Pantalla de carga */
+.loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #2c2c2c;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+}
+
+.loading-text {
+    font-size: 16px;
+    margin-bottom: 30px;
+    text-align: center;
+    color: white;
+    text-shadow: 2px 2px 0px #000;
+    padding: 0 20px;
+}
+
+.loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #404040;
+    border-top: 5px solid #ffffff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading-dots {
+    margin-top: 20px;
+    font-size: 20px;
+}
+
+.dot {
+    animation: blink 1.5s infinite;
+}
+
+.dot:nth-child(2) {
+    animation-delay: 0.3s;
+}
+
+.dot:nth-child(3) {
+    animation-delay: 0.6s;
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+}
+
+/* Pantalla final */
+.final-screen {
+    display: none;
+    width: 100vw;
+    height: 100vh;
+    background-color: #2c2c2c;
+    overflow: hidden;
+}
+
+.content-horizontal {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    gap: 20px;
+    padding: 15px;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Panel izquierdo: Solo historia */
+.left-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 450px;
+}
+
+/* Panel derecho: Masa e Inventario */
+.right-panel {
+    flex-shrink: 0;
+    width: 350px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+}
+
+.masa-inventory-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+}
+
+.masa-display {
+    width: 100%;
+    height: 300px;
+    background-color: #ffffff;
+    border: 3px solid #808080;
+    border-top-color: #ffffff;
+    border-left-color: #ffffff;
+    border-right-color: #404040;
+    border-bottom-color: #404040;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-size: contain;
+    background-position: center center;
+    background-repeat: no-repeat;
+    overflow: hidden;
+    position: relative;
+}
+
+.masa-display img {
+    max-width: 100%;
+    max-height: 100%;
+    image-rendering: pixelated;
+}
+
+.inventario-display {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+}
+
+.inventario-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    padding: 0;
+}
+
+.item-slot {
+    width: 55px;
+    height: 55px;
+    background-color: #808080;
+    border: 2px solid #404040;
+    border-top-color: #c0c0c0;
+    border-left-color: #c0c0c0;
+    border-right-color: #000000;
+    border-bottom-color: #000000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.item-slot img {
+    max-width: 45px;
+    max-height: 45px;
+    image-rendering: pixelated;
+}
+
+.story-container {
+    background-color: transparent;
+    border: none;
+    padding: 20px;
+    color: #ffffff;
+    font-size: 11px;
+    line-height: 1.9;
+    text-align: left;
+    word-spacing: 2px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.buttons-container {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    padding: 0;
+    flex-shrink: 0;
+    width: 100%;
+}
+
+.btn-action {
+    background-color: #fff;
+    color: #000;
+    border: 3px solid #000;
+    padding: 12px 25px;
+    font-size: 11px;
+    font-family: 'Press Start 2P', monospace;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.1s ease;
+    text-decoration: none;
+    display: inline-block;
+    box-shadow: 4px 4px 0px #000;
+}
+
+.btn-action:hover {
+    background-color: #000;
+    color: #fff;
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0px #000;
+}
+
+.btn-action:active {
+    transform: translate(4px, 4px);
+    box-shadow: 0px 0px 0px #000;
+}
+
+/* Sección de items info (oculta en PDF) */
+.items-info-section {
+    display: none; /* Oculto por defecto en la vista principal */
+}
+
+.items-info-container {
+    padding: 20px;
+    text-align: left;
+}
+
+.items-info-container h3 {
+    font-size: 14px;
+    margin-bottom: 15px;
+    color: #ffffff;
+    text-shadow: 2px 2px 0px #000;
+    text-align: center;
+}
+
+.items-info-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.item-info {
+    margin-bottom: 15px;
+    padding: 12px;
+    background-color: #2c2c2c;
+    border: 3px solid #808080;
+}
+
+.item-info h4 {
+    font-size: 12px;
+    margin: 0 0 8px 0;
+    color: #ffffff;
+    text-shadow: 1px 1px 0px #000;
+}
+
+.item-info p {
+    font-size: 10px;
+    line-height: 1.6;
+    margin: 0;
+    color: #cccccc;
+}
+
+/* Scrollbar personalizada */
+.right-panel::-webkit-scrollbar,
+.story-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.right-panel::-webkit-scrollbar-track,
+.story-container::-webkit-scrollbar-track {
+    background: #404040;
+}
+
+.right-panel::-webkit-scrollbar-thumb,
+.story-container::-webkit-scrollbar-thumb {
+    background: #808080;
+    border: 1px solid #000;
+}
+
+/* Ajustes para pantallas muy pequeñas */
+@media screen and (max-height: 450px) and (orientation: landscape) {
+    .content-horizontal {
+        padding: 10px;
+        gap: 15px;
+    }
+    
+    .left-panel {
+        width: 240px;
+        gap: 10px;
+    }
+    
+    .item-slot {
+        width: 48px;
+        height: 48px;
+    }
+    
+    .item-slot img {
+        max-width: 40px;
+        max-height: 40px;
+    }
+    
+    .story-container {
+        font-size: 10px;
+        padding: 10px;
+        line-height: 1.6;
+    }
+    
+    .btn-action {
+        font-size: 10px;
+        padding: 10px 20px;
+    }
+    
+    .loading-text {
+        font-size: 12px;
+    }
+}
+
+@media screen and (max-width: 700px) and (orientation: landscape) {
+    .left-panel {
+        width: 220px;
+    }
+    
+    .story-container {
+        font-size: 9px;
+    }
+    
+    .buttons-container {
+        gap: 15px;
+    }
+}

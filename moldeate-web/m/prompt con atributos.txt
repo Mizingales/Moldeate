@@ -1,0 +1,4 @@
+Genera un breve relato en segunda persona sobre un personaje ficticio. Debe contar acerca de lo que ese personaje está haciendo ahora mismo y que planea hacer el resto del día. Ten en cuenta que el lector de este relato se debe sentir como si se tratara de él mismo.
+La personalidad del personaje debe estar definida por los siguientes adjetivos: [ACÁ VAN LOS ATRIBUTOS]. 
+El relato debe ser poético y evocador, no más de 8 oraciones. 
+No hace falta mencionar explícitamente los adjetivos, transmítelos a través de las acciones, emociones y pensamientos del personaje.
